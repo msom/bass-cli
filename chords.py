@@ -88,7 +88,10 @@ while key != 'q':
     fretboard = get_fretboard(notes, tuning)
 
     print(f'{base} {" ".join(progression)}\n')
-    print(f'{terminal.bold}{chord} {progression[index]} {terminal.normal}\n')
+    if progression:
+        print(
+            f'{terminal.bold}{chord} {progression[index]} {terminal.normal}\n'
+        )
     print_fretboard(terminal, fretboard, notes[0])
     print('\nPress "q" to quit, arrow for scale progression, "r" to restart')
 
