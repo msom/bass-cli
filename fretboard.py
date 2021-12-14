@@ -22,8 +22,9 @@ class Fretboard:
     @classmethod
     def from_notes(cls, notes, tuning):
         result = []
-        # todo: octave from tuning
-        for octave in range(1, 5):
+        min_octave = tuning.tuning[0].octave
+        max_octave = tuning.tuning[-1].octave + 2
+        for octave in range(min_octave, max_octave + 1):
             for note in notes:
                 note = Note(note, octave)
                 frets = tuning.find_frets(note)
@@ -41,7 +42,7 @@ class Fretboard:
     def print(self, base=None):
         """ Print the fretboard as ASCII characters.
 
-        Optionally acceptysa base note (as string) for highlighting.
+        Optionally accepts a base note (as string) for highlighting.
 
         """
 
