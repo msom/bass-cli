@@ -1,3 +1,5 @@
 blessings
 getkey
 mingus
+numpy
+pyaudio
