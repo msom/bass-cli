@@ -1,7 +1,23 @@
+from mingus.containers import Note
 from mingus.extra.fft import find_frequencies, find_notes
+from mingus.midi.fluidsynth import init, play_Note, set_instrument, stop_Note
 from operator import itemgetter
-from struct import unpack
 from pyaudio import PyAudio, paInt16
+from struct import unpack
+from time import sleep
+
+
+init('198-JAzz BAzz.sf2')
+set_instrument(1, 1)
+
+
+def play_notes(notes, duration=0.5):
+    for note in notes:
+        octaved = Note(note)
+        octaved.octave_up()
+        play_Note(octaved)
+        sleep(duration)
+        stop_Note(octaved)
 
 
 def find_note(data, freq, bits, treshhold=100000):

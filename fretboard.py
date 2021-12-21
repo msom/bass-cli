@@ -11,6 +11,15 @@ class FretboardNote(Note):
         self.string = string
         self.fret = fret
 
+    @classmethod
+    def from_tuning(cls, tuning, note):
+        result = tuning.find_frets(note)
+        return [
+            cls(note, string, fret)
+            for string, fret in enumerate(result)
+        ]
+        [cls(note, string, fret) for string, fret in enumerate(result)]
+
 
 class Fretboard:
 
@@ -24,15 +33,14 @@ class Fretboard:
         result = []
         min_octave = tuning.tuning[0].octave
         max_octave = tuning.tuning[-1].octave + 2
-        for octave in range(min_octave, max_octave + 1):
-            for note in notes:
-                note = Note(note, octave)
-                frets = tuning.find_frets(note)
-                frets = [
-                    FretboardNote(note, string, fret)
-                    for string, fret in enumerate(frets)
-                ]
-                result.append(frets)
+        for note in notes:
+            if getattr(note, 'octave', None):
+                result.append(FretboardNote.from_tuning(tuning, note))
+            else:
+                for octave in range(min_octave, max_octave + 1):
+                    result.append(
+                        FretboardNote.from_tuning(tuning, Note(note, octave))
+                    )
 
         result = zip(*result)
         result = map(lambda x: [y for y in x if y.fret is not None], result)
